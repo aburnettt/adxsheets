@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/adxsheets/static/media/fontawesome-webfont.af7ae505.woff2"
   },
   {
-    "revision": "9146aa0602dcef3f2279",
+    "revision": "d1c48fb19f8d88dd224e",
     "url": "/adxsheets/static/css/main.c8acf9b7.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = [
     "url": "/adxsheets/static/js/2.da055370.chunk.js"
   },
   {
-    "revision": "9146aa0602dcef3f2279",
-    "url": "/adxsheets/static/js/main.b15d93e9.chunk.js"
+    "revision": "d1c48fb19f8d88dd224e",
+    "url": "/adxsheets/static/js/main.c63de19c.chunk.js"
   },
   {
     "revision": "fee66e712a8a08eef5805a46892932ad",
@@ -40,7 +40,7 @@ self.__precacheManifest = [
     "url": "/adxsheets/static/css/2.da6e61a8.chunk.css"
   },
   {
-    "revision": "6736671d008267411f248e2e326f7fe2",
+    "revision": "82f8e442aefb768b9d25e72202dd63b3",
     "url": "/adxsheets/index.html"
   }
 ];
