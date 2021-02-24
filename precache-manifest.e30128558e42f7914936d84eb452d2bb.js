@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/adxsheets/static/media/fontawesome-webfont.af7ae505.woff2"
   },
   {
-    "revision": "dd2523357e363e01daa6",
+    "revision": "ce458eff7f0d050043e7",
     "url": "/adxsheets/static/css/main.c8acf9b7.chunk.css"
   },
   {
@@ -16,31 +16,31 @@ self.__precacheManifest = [
     "url": "/adxsheets/static/media/fontawesome-webfont.912ec66d.svg"
   },
   {
-    "revision": "a88fdf23cb15f2801b41",
-    "url": "/adxsheets/static/js/2.cc3d50f5.chunk.js"
+    "revision": "93a804164db532fe2637",
+    "url": "/adxsheets/static/js/2.93f03c18.chunk.js"
   },
   {
-    "revision": "dd2523357e363e01daa6",
-    "url": "/adxsheets/static/js/main.35e901da.chunk.js"
+    "revision": "ce458eff7f0d050043e7",
+    "url": "/adxsheets/static/js/main.eb805a81.chunk.js"
   },
   {
     "revision": "fee66e712a8a08eef5805a46892932ad",
     "url": "/adxsheets/static/media/fontawesome-webfont.fee66e71.woff"
   },
   {
-    "revision": "b06871f281fee6b241d60582ae9369b9",
-    "url": "/adxsheets/static/media/fontawesome-webfont.b06871f2.ttf"
-  },
-  {
     "revision": "674f50d287a8c48dc19ba404d20fe713",
     "url": "/adxsheets/static/media/fontawesome-webfont.674f50d2.eot"
   },
   {
-    "revision": "a88fdf23cb15f2801b41",
-    "url": "/adxsheets/static/css/2.09d521f4.chunk.css"
+    "revision": "b06871f281fee6b241d60582ae9369b9",
+    "url": "/adxsheets/static/media/fontawesome-webfont.b06871f2.ttf"
   },
   {
-    "revision": "b9c3c38c62c9bb3a23425d8185a08c72",
+    "revision": "93a804164db532fe2637",
+    "url": "/adxsheets/static/css/2.6e83e1b6.chunk.css"
+  },
+  {
+    "revision": "b181c53e4bf1d927978b3387c353ff89",
     "url": "/adxsheets/index.html"
   }
 ];
