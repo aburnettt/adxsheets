@@ -3,7 +3,7 @@ Active Healing,Ability,Action,1d4,1d4+1,2d4+1,2d6+2,3d6+5,4d4+10,Heal,heal,,If t
 Adaptive Skin,Buff,,2,4,5,7,10,15,DS,ds,adapted to damage type,"Whenever the Hero incurs damage. he may adapt to that damage type. gaining a bonus to Natural DS.
 This bonus remains in effect until the Hero chooses to drop the resistance.
 The Hero may elect to drop the resistance at any time.
-If the Hero incurs damage from a different damage type, he may elect to switch resistance to this new damage type.
+If the Hero incurs damage from a different damage type. he may elect to switch resistance to this new damage type.
 The switch occurs at the conclusion of the instance.
 While a resistance is up. the Hero has the NHL trait.
 Each resistance has a unique visibility marker. identifying to the world which resistance is currently active.
@@ -72,8 +72,8 @@ At r0. Cleanse heals all human (i.e. non-super powered) ailments and poisoning.
 Cleanse,Buff,,7,9,10,11,13,17,CON Bonus,,,,,,,
 Cocoon,Ability,Channel,,,,,,,,,,"The Hero encloses himself in a cocoon.
 Cocoon has 5HP
-Until the cocoon is destroyed or the Hero emerges, he is in a deep sleep, unable to see, hear, or act.
-After 5 rounds, The Hero emerges, recovering from all HP loss, lost limbs, ailments, and fatigue, but very hungry.
+Until the cocoon is destroyed or the Hero emerges. he is in a deep sleep. unable to see. hear. or act.
+After 5 rounds. The Hero emerges. recovering from all HP loss. lost limbs. ailments. and fatigue. but very hungry.
 The Hero can prematurely emerge as a Flash
 If the cocoon is destroyed before the Hero emerges. he recovers nothing and is knocked down.
 ",10,,,

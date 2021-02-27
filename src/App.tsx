@@ -4,6 +4,7 @@ import ManagePowersPanel from "./components/ManagePowersPanel";
 import ManageArchPanel from "./components/ManageArchPanel";
 
 import InfoPanel from "./components/InfoPanel";
+import { stringNumberComparer } from "@material-ui/data-grid";
 
 interface IArch {
   name: string
@@ -20,11 +21,13 @@ interface IState {
   showManagePowersPanel: boolean
   showManageArchPanel: boolean
   selectedPowers: any
+  selectedArch: string
+  level: number
   powerData: any[]
   archData: any[]
   parsedAbilities: any[]
   parsedBuffs: any[]
-  parsedArch: IArch
+  parsedArch: IArch | null
 }
 
 interface IProps {
@@ -39,33 +42,53 @@ export default class App extends React.Component<IProps, IState> {
       showManagePowersPanel: false,
       showManageArchPanel: false,
       selectedPowers: {},
+      selectedArch: "",
+      level: 1,
       powerData: [],
+      archData: [],
       parsedAbilities: [],
-      parsedBuffs: []
+      parsedBuffs: [],
+      parsedArch: null
     }
 
   }
 
   componentDidMount() {
-
+    let archName = window.localStorage.getItem("selectedArch");
+    let level = window.localStorage.getItem("level");
     let sp = window.localStorage.getItem("selectedPowers");
-    if (sp != null) {
-      try {
-        this.parseAbilities(JSON.parse(sp));
-      } catch (e) {
 
-      }
+    if (archName){
+      this.setState({
+        selectedArch: archName
+      })
     }
-
+    if (level){
+      this.setState({
+        level: JSON.parse(level)
+      })
+    }
+    if (sp){
+      this.setState({
+        selectedPowers: JSON.parse(sp)
+      })
+    }
     fetch("https://raw.githubusercontent.com/aburnettt/adxsheets/master/src/data/powers.csv")
       .then((r) => r.text())
       .then(text => {
         this.setState({
           powerData: this.csvToJson(text)
         });
-        if (this.state.selectedPowers) {
-          this.parseAbilities(this.state.selectedPowers);
-        }
+        this.parseData();
+      });
+
+    fetch("https://raw.githubusercontent.com/aburnettt/adxsheets/master/src/data/arch.csv")
+      .then((r) => r.text())
+      .then(text => {
+        this.setState({
+          archData: this.csvToJson(text)
+        });
+        this.parseData();
       });
   }
 
@@ -81,14 +104,14 @@ export default class App extends React.Component<IProps, IState> {
           }
         />
         <main className="container">
-          <InfoPanel
-            abilities={this.state.parsedAbilities}
-            buffs={this.state.parsedBuffs}
-          />
-
-
+          {this.state.selectedArch == "" ? (<strong>Select an Archetype</strong>) : 
+            (<InfoPanel
+              abilities={this.state.parsedAbilities}
+              buffs={this.state.parsedBuffs}
+            />)}
         </main>
-        {this.state.showManagePowersPanel &&
+        {
+          this.state.showManagePowersPanel &&
           (<ManagePowersPanel
             powerData={this.state.powerData}
             selectedPowers={this.state.selectedPowers}
@@ -98,17 +121,20 @@ export default class App extends React.Component<IProps, IState> {
             handleClose={() => this.closePanels()
             }
           />)}
-        {this.state.showManageArchPanel &&
+        {
+          this.state.showManageArchPanel &&
           (<ManageArchPanel
             archData={this.state.archData}
             selectedArch={this.state.selectedArch}
-            handleConfirm={(selectedArch: IArch) =>
-              this.updateArch(selectedArch)
+            level={this.state.parsedArch ? this.state.parsedArch.level : 1}
+            handleConfirm={(name: string, level: number) =>
+              this.updateSelectedArch(name, level)
             }
             handleClose={() => this.closePanels()
             }
-          />)}
-      </div>
+          />)
+        }
+      </div >
     );
   }
 
@@ -119,23 +145,23 @@ export default class App extends React.Component<IProps, IState> {
     })
   }
 
-  updateArch(selectedArch: any) {
-    window.localStorage.setItem("selectedArch", JSON.stringify(selectedArch));
-
-    /*
-    {
-      major: number
-      minor: number
-    }
-    */
-
+  updateSelectedArch(name: string, lev: number) {
+    this.setState({
+      selectedArch: name,
+      level: lev
+    })
+    window.localStorage.setItem("selectedArch", name);
+    window.localStorage.setItem("level", JSON.stringify(lev));
+    this.parseData(this.state.selectedPowers, name, lev);
     this.closePanels();
   }
 
   updateSelectedPowers(selectedPowers: any) {
+    this.setState({
+      selectedPowers: selectedPowers
+    })
     window.localStorage.setItem("selectedPowers", JSON.stringify(selectedPowers));
-    this.parseAbilities(selectedPowers);
-
+    this.parseData(selectedPowers);
     this.closePanels();
   }
 
@@ -182,23 +208,83 @@ export default class App extends React.Component<IProps, IState> {
 
 
 
-  private parseAbilities(sp: any) {
-    if (!sp ||
-      sp.length === 0) {
+  private parseData(sp: any = this.state.selectedPowers, selectedArch: string = this.state.selectedArch, level: number = this.state.level) {
+    if (selectedArch === "" ||
+      level === 0 ||
+      this.state.archData === [] ||
+      this.state.powerData === []
+    ) {
       return;
     }
+
+    var parsedArch: IArch = {
+      characterPoints: 0,
+      lesserRank: 0,
+      level: level,
+      majorRank: 0,
+      minorRank: 0,
+      name: selectedArch,
+      trainingPoints: 0,
+      willDice: 0
+    }
+
+    this.state.archData.forEach(function (row) {
+      if (row["Arch"] === selectedArch) {
+        var val = row["Level " + level];
+        var detail = row["Detail"];
+        //todo - add detail to parsedArch
+        switch (row["Row"]) {
+          case "CP":
+            parsedArch.characterPoints = val;
+            break;
+          case "TP":
+            parsedArch.trainingPoints = val;
+            break;
+          case "Major":
+            parsedArch.majorRank = val;
+            break;
+          case "Minor":
+            parsedArch.minorRank = val;
+            break;
+          case "Lesser":
+            parsedArch.lesserRank = val;
+            break;
+          case "Will Dice":
+            parsedArch.willDice = val;
+            break;
+          default:
+          //do nothing
+        }
+      }
+    });
 
     var abilities: any[] = [];
     var buffs: any[] = [];
     //todo - get Powers to give you the appropriate abilities and buffs
     this.state.powerData.forEach(power => {
       if (sp[power["Power"]] &&
-        sp[power["Power"]] > 0) {
+        sp[power["Power"]] > 0 &&
+        parsedArch) {
+        var rank = 0;
+        switch (sp[power["Power"]]) {
+          case 1:
+            rank = parsedArch.lesserRank;
+            break;
+          case 2:
+            rank = parsedArch.minorRank;
+            break;
+          case 3:
+            rank = parsedArch.majorRank;
+            break;
+          default:
+            //do nothing
+            break;
+        }
         if (power["Row"] === "Ability") {
           var ability = {
             "name": power["Power"],
             "action": power["Action"],
-            "dmg": power["r5"],
+            "dmg": power["r" + rank],
             "atk": "1d20",
             "effect": power["Effect"],
             "detail": power["Detail"],
@@ -218,17 +304,9 @@ export default class App extends React.Component<IProps, IState> {
     this.setState({
       parsedAbilities: abilities,
       parsedBuffs: buffs,
-      selectedPowers: sp
+      parsedArch: parsedArch
     })
 
-    /*
-            name = { a["name"]}
-            atk = { a["atk"]}
-            dmg = { a["dmg"]}
-            effect = { a["effect"]}
-            condition = { a["condition"]}
-            detail = { a["detail"]}        
-            */
 
   }
 }
