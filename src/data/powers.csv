@@ -72,7 +72,7 @@ At r0. Cleanse heals all human (i.e. non-super powered) ailments and poisoning.
 Cleanse,Buff,,7,9,10,11,13,17,CON Bonus,,,,,,,
 Cocoon,Ability,Channel,,,,,,,,,,"The Hero encloses himself in a cocoon.
 Cocoon has 5HP
-Until the cocoon is destroyed or the Hero emerges, he is in a deep sleep, unable to see, hear, or act.
+Until the cocoon is destroyed or the Hero emerges. he is in a deep sleep. unable to see. hear. or act.
 After 5 rounds. The Hero emerges. recovering from all HP loss. lost limbs. ailments. and fatigue. but very hungry.
 The Hero can prematurely emerge as a Flash
 If the cocoon is destroyed before the Hero emerges. he recovers nothing and is knocked down.
