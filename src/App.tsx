@@ -1,14 +1,30 @@
 import React from "react";
 import NavBar from "./components/NavBar";
 import ManagePowersPanel from "./components/ManagePowersPanel";
+import ManageArchPanel from "./components/ManageArchPanel";
+
 import InfoPanel from "./components/InfoPanel";
+
+interface IArch {
+  name: string
+  level: number
+  lesserRank: number
+  minorRank: number
+  majorRank: number
+  characterPoints: number
+  trainingPoints: number
+  willDice: number
+}
 
 interface IState {
   showManagePowersPanel: boolean
+  showManageArchPanel: boolean
   selectedPowers: any
   powerData: any[]
+  archData: any[]
   parsedAbilities: any[]
   parsedBuffs: any[]
+  parsedArch: IArch
 }
 
 interface IProps {
@@ -21,6 +37,7 @@ export default class App extends React.Component<IProps, IState> {
 
     this.state = {
       showManagePowersPanel: false,
+      showManageArchPanel: false,
       selectedPowers: {},
       powerData: [],
       parsedAbilities: [],
@@ -46,7 +63,7 @@ export default class App extends React.Component<IProps, IState> {
         this.setState({
           powerData: this.csvToJson(text)
         });
-        if (this.state.selectedPowers){
+        if (this.state.selectedPowers) {
           this.parseAbilities(this.state.selectedPowers);
         }
       });
@@ -58,6 +75,9 @@ export default class App extends React.Component<IProps, IState> {
         <NavBar
           toggleManagePowers={
             this.showManagePowersPanel
+          }
+          toggleManageArch={
+            this.showManageArchPanel
           }
         />
         <main className="container">
@@ -78,14 +98,38 @@ export default class App extends React.Component<IProps, IState> {
             handleClose={() => this.closePanels()
             }
           />)}
+        {this.state.showManageArchPanel &&
+          (<ManageArchPanel
+            archData={this.state.archData}
+            selectedArch={this.state.selectedArch}
+            handleConfirm={(selectedArch: IArch) =>
+              this.updateArch(selectedArch)
+            }
+            handleClose={() => this.closePanels()
+            }
+          />)}
       </div>
     );
   }
 
   closePanels = () => {
     this.setState({
-      showManagePowersPanel: false
+      showManagePowersPanel: false,
+      showManageArchPanel: false
     })
+  }
+
+  updateArch(selectedArch: any) {
+    window.localStorage.setItem("selectedArch", JSON.stringify(selectedArch));
+
+    /*
+    {
+      major: number
+      minor: number
+    }
+    */
+
+    this.closePanels();
   }
 
   updateSelectedPowers(selectedPowers: any) {
@@ -98,6 +142,12 @@ export default class App extends React.Component<IProps, IState> {
   showManagePowersPanel = () => {
     this.setState({
       showManagePowersPanel: true
+    }
+    );
+  }
+  showManageArchPanel = () => {
+    this.setState({
+      showManageArchPanel: true
     }
     );
   }
