@@ -58,17 +58,17 @@ export default class App extends React.Component<IProps, IState> {
     let level = window.localStorage.getItem("level");
     let sp = window.localStorage.getItem("selectedPowers");
 
-    if (archName){
+    if (archName) {
       this.setState({
         selectedArch: archName
       })
     }
-    if (level){
+    if (level) {
       this.setState({
         level: JSON.parse(level)
       })
     }
-    if (sp){
+    if (sp) {
       this.setState({
         selectedPowers: JSON.parse(sp)
       })
@@ -95,16 +95,19 @@ export default class App extends React.Component<IProps, IState> {
   render() {
     return (
       <div>
-        <NavBar
-          toggleManagePowers={
-            this.showManagePowersPanel
-          }
-          toggleManageArch={
-            this.showManageArchPanel
-          }
-        />
+        {this.state.archData !== [] &&
+          this.state.powerData !== [] && (
+            <NavBar
+              toggleManagePowers={
+                this.showManagePowersPanel
+              }
+              toggleManageArch={
+                this.showManageArchPanel
+              }
+            />
+          )}
         <main className="container">
-          {this.state.selectedArch == "" ? (<strong>Select an Archetype</strong>) : 
+          {this.state.selectedArch == "" ? (<strong>Select an Archetype</strong>) :
             (<InfoPanel
               abilities={this.state.parsedAbilities}
               buffs={this.state.parsedBuffs}
@@ -112,9 +115,11 @@ export default class App extends React.Component<IProps, IState> {
         </main>
         {
           this.state.showManagePowersPanel &&
+          this.state.parsedArch &&
           (<ManagePowersPanel
             powerData={this.state.powerData}
             selectedPowers={this.state.selectedPowers}
+            totalCP={this.state.parsedArch.characterPoints}
             handleConfirm={(selectedPowers: any) =>
               this.updateSelectedPowers(selectedPowers)
             }
