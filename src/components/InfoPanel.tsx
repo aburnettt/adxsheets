@@ -29,13 +29,18 @@ export default class InfoPanel extends React.Component<IProps, IState> {
 
 
     render() {
-        const rows: RowsProp = [];
-        const columns: ColDef[] = [
-            { field: 'name', headerName: 'Name', width: 250 },
-            { field: 'action', headerName: 'Action', width: 120 },
-            { field: 'atk', headerName: 'Atk', width: 120 },
+        const buffRows: RowsProp = [];
+        const buffColumns: ColDef[] = [];
+
+
+
+        const abilityRows: RowsProp = [];
+        const abilityColumns: ColDef[] = [
+            { field: 'name', headerName: 'Name', flex: 45 },
+            { field: 'action', headerName: 'Action', flex: 30 },
+            { field: 'atk', headerName: 'Atk', flex: 20 },
             {
-                field: 'effect', headerName: 'Effect', flex: 100,
+                field: 'effect', headerName: 'Effect', flex: 85,
                 renderCell: (params: CellParams) => (
                     <strong>
                         {(params.value as string).split("|||")[0]}
@@ -49,7 +54,7 @@ export default class InfoPanel extends React.Component<IProps, IState> {
 
         for (let i = 0; i < this.props.abilities.length; i++) {
             var a = this.props.abilities[i];
-            rows.push(
+            abilityRows.push(
                 {
                     id: i,
                     name: a["name"],
@@ -61,17 +66,34 @@ export default class InfoPanel extends React.Component<IProps, IState> {
 
         }
         return (
-            <Box minHeight="25%">
-                <h3>Abilities</h3>
-                <div style={{ height: 300, width: '100%' }}>
-                    <DataGrid
-                        hideFooter={true}
-                        hideFooterPagination={true}
-                        rows={rows}
-                        columns={columns} />
-                </div>
-            </Box>
+            <Box display="flex">
+                <Box minHeight="25%" width="30%" position="Left" display="flex">
+                    <div style={{ width: '500px' }}>
+                        <h3>Attributes</h3>
+                        <DataGrid
+                            pageSize={15}
+                            autoHeight={true}
+                            hideFooter={true}
+                            hideFooterPagination={true}
 
+                            rows={buffRows}
+                            columns={buffColumns} />
+                    </div>
+                </Box>
+                <Box minHeight="25%" width="65%" position="right" display="flex">
+                    <div style={{ width: '800px' }}>
+                        <h3> Abilities</h3>
+                        <DataGrid
+                            pageSize={15}
+                            autoHeight={true}
+                            hideFooter={true}
+                            hideFooterPagination={true}
+
+                            rows={abilityRows}
+                            columns={abilityColumns} />
+                    </div>
+                </Box>
+            </Box >
         )
     }
 

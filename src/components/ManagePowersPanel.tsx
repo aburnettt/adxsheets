@@ -41,11 +41,12 @@ export default class ManagePowersPanel extends React.Component<IProps, IState> {
   componentDidMount() {
     //calculate remaining CP based on all data
     var remainingCP = this.props.totalCP;
+    var sp = this.props.selectedPowers;
     this.props.powerData.forEach(power => {
-      if (this.props.selectedPowers[power["Power"]]) {
-        switch (this.props.selectedPowers[power["Power"]]) {
+      if (sp[power["Power"]]) {
+        switch (sp[power["Power"]]) {
           case 1:
-            remainingCP -= Number(power["Lesseer"]);
+            remainingCP -= Number(power["Lesser"]);
             break;
           case 2:
             remainingCP -= Number(power["Minor"]);
@@ -87,11 +88,12 @@ export default class ManagePowersPanel extends React.Component<IProps, IState> {
               */}
               <table><thead><tr><th>Power</th><th>Major</th><th>Minor</th><th>Lesser</th></tr></thead>
                 <tbody>
-                  {this.props.powerData && this.props.powerData.map((row: any[string]) => {
+                  {this.props.powerData && this.props.powerData.map((row: any[string], i) => {
                     if (row["Major"] || row["Minor"] || row["Lesser"]) {
                       //buyable power
                       return (
                         <BuyablePower
+                          key={i}
                           name={row["Power"]}
                           majorCost={row["Major"]}
                           minorCost={row["Minor"]}

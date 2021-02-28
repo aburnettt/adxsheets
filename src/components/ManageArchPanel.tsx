@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Button,
+  Container,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -22,12 +23,12 @@ interface IState {
   level: number;
 }
 
-export default class ManagePowersPanel extends React.Component<IProps, IState> {
+export default class ManageArchPanel extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
     this.state = {
-      selectedArch: this.props.selectedArch  ? this.props.selectedArch : "Standard",
+      selectedArch: this.props.selectedArch ? this.props.selectedArch : "Standard",
       level: this.props.level ? this.props.level : 1
     };
 
@@ -46,6 +47,10 @@ export default class ManagePowersPanel extends React.Component<IProps, IState> {
   }
 
   render() {
+    //build output panel
+    var output = [];
+    var level = this.state.level;
+    var sa = this.state.selectedArch;
     var currentArch: string = "";
     return (
       <Dialog
@@ -73,15 +78,22 @@ export default class ManagePowersPanel extends React.Component<IProps, IState> {
               onChange={this.handleLevelChange}
               className="level-control"
             />
-            {/*<Container>
+            {/*Output data about the current selection*/}
+            <Container>
               <table>
                 <tbody>
-                <tr>
-                  
-                </tr>
+                  {this.props.archData.map((row, i) => {
+                    if (row["Arch"] === sa) {
+                      return (<tr>
+                        <td>{row["Row"]}:</td>
+                        <td>{row["Level " + level]}</td>
+                      </tr>);
+                    }
+                  })
+                  }
                 </tbody>
               </table>
-            </Container>*/}
+            </Container>
           </FormControl>
           <div className="actionButtons">
             <Button onClick={() => this.props.handleConfirm(this.state.selectedArch, this.state.level)} color="primary">Save</Button>
