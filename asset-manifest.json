@@ -1,16 +1,24 @@
 {
-  "main.css": "/adxsheets/static/css/main.76cbcc74.chunk.css",
-  "main.js": "/adxsheets/static/js/main.b11a3ff6.chunk.js",
-  "main.js.map": "/adxsheets/static/js/main.b11a3ff6.chunk.js.map",
-  "runtime~main.js": "/adxsheets/static/js/runtime~main.36073d38.js",
-  "runtime~main.js.map": "/adxsheets/static/js/runtime~main.36073d38.js.map",
-  "static/css/2.6e83e1b6.chunk.css": "/adxsheets/static/css/2.6e83e1b6.chunk.css",
-  "static/js/2.adfa2d58.chunk.js": "/adxsheets/static/js/2.adfa2d58.chunk.js",
-  "static/js/2.adfa2d58.chunk.js.map": "/adxsheets/static/js/2.adfa2d58.chunk.js.map",
-  "index.html": "/adxsheets/index.html",
-  "precache-manifest.5a4df3fc6ce45fb26583af6a7b660035.js": "/adxsheets/precache-manifest.5a4df3fc6ce45fb26583af6a7b660035.js",
-  "service-worker.js": "/adxsheets/service-worker.js",
-  "static/css/2.6e83e1b6.chunk.css.map": "/adxsheets/static/css/2.6e83e1b6.chunk.css.map",
-  "static/css/main.76cbcc74.chunk.css.map": "/adxsheets/static/css/main.76cbcc74.chunk.css.map",
-  "static/media/font-awesome.css": "/adxsheets/static/media/fontawesome-webfont.fee66e71.woff"
+  "files": {
+    "main.css": "/adxsheets/static/css/main.fd9f56eb.chunk.css",
+    "main.js": "/adxsheets/static/js/main.6a24deff.chunk.js",
+    "main.js.map": "/adxsheets/static/js/main.6a24deff.chunk.js.map",
+    "runtime-main.js": "/adxsheets/static/js/runtime-main.f5836b8b.js",
+    "runtime-main.js.map": "/adxsheets/static/js/runtime-main.f5836b8b.js.map",
+    "static/css/2.09508f88.chunk.css": "/adxsheets/static/css/2.09508f88.chunk.css",
+    "static/js/2.b957e7ef.chunk.js": "/adxsheets/static/js/2.b957e7ef.chunk.js",
+    "static/js/2.b957e7ef.chunk.js.map": "/adxsheets/static/js/2.b957e7ef.chunk.js.map",
+    "index.html": "/adxsheets/index.html",
+    "static/css/2.09508f88.chunk.css.map": "/adxsheets/static/css/2.09508f88.chunk.css.map",
+    "static/css/main.fd9f56eb.chunk.css.map": "/adxsheets/static/css/main.fd9f56eb.chunk.css.map",
+    "static/js/2.b957e7ef.chunk.js.LICENSE.txt": "/adxsheets/static/js/2.b957e7ef.chunk.js.LICENSE.txt",
+    "static/media/font-awesome.css": "/adxsheets/static/media/fontawesome-webfont.f691f37e.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f5836b8b.js",
+    "static/css/2.09508f88.chunk.css",
+    "static/js/2.b957e7ef.chunk.js",
+    "static/css/main.fd9f56eb.chunk.css",
+    "static/js/main.6a24deff.chunk.js"
+  ]
 }
