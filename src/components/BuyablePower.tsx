@@ -1,16 +1,6 @@
 import React from 'react';
 import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    TextField,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    Select,
-    Input
+    Button
 } from '@material-ui/core';
 
 
@@ -43,16 +33,8 @@ export default class BuyablePower extends React.Component<IProps, IState> {
         })
         this.props.purchase(this.props.name, level, cost);
     }
+
     componentDidMount() {
-        if (this.props.purchased == 0) {
-            return;
-        } else if (this.props.purchased == 1) {
-            this.setPurchased(this.props.purchased, this.props.lesserCost);
-        } else if (this.props.purchased == 2) {
-            this.setPurchased(this.props.purchased, this.props.minorCost);
-        } else if (this.props.purchased == 3) {
-            this.setPurchased(this.props.purchased, this.props.majorCost);
-        }
     }
 
 

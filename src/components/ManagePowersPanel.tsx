@@ -37,8 +37,30 @@ export default class ManagePowersPanel extends React.Component<IProps, IState> {
       remainingCP: this.props.totalCP
     };
   }
-  componentDidMount() {
 
+  componentDidMount() {
+    //calculate remaining CP based on all data
+    var remainingCP = this.props.totalCP;
+    this.props.powerData.forEach(power => {
+      if (this.props.selectedPowers[power["Power"]]) {
+        switch (this.props.selectedPowers[power["Power"]]) {
+          case 1:
+            remainingCP -= Number(power["Lesseer"]);
+            break;
+          case 2:
+            remainingCP -= Number(power["Minor"]);
+            break;
+          case 3:
+            remainingCP -= Number(power["Major"]);
+            break;
+          default:
+            return;
+        }
+      }
+    });
+    this.setState({
+      remainingCP: remainingCP
+    });
   }
 
   render() {
