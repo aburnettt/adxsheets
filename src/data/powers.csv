@@ -1,5 +1,6 @@
 Power,Row,Action,r0,r1,r2,r3,r4,r5,Effect,Tags,Condition,Detail,Major,Minor,Lesser,Lore
 Active Healing,Ability,Action,1d4,1d4+1,2d4+1,2d6+2,3d6+5,4d4+10,Heal,heal,,If the Hero is at full HP. he can heal a missing limb over a Long Rest,35,25,14,The Hero can regenerate his wounds as an action.
+Adaptive Skin,Ability,Flash,,,,,,,Adapt,,after taking damage,Adapt to the damage type (physical / elemental / toxic) ,20,14,8,
 Adaptive Skin,Buff,,2,4,5,7,10,15,DS,ds,adapted to damage type,"Whenever the Hero incurs damage. he may adapt to that damage type. gaining a bonus to Natural DS.
 This bonus remains in effect until the Hero chooses to drop the resistance.
 The Hero may elect to drop the resistance at any time.
@@ -9,7 +10,6 @@ While a resistance is up. the Hero has the NHL trait.
 Each resistance has a unique visibility marker. identifying to the world which resistance is currently active.
 Player & GM work together to determine the specifics.
 ",,,,
-Adaptive Skin,Ability,Flash,,,,,,,Adapt,,after taking damage,Adapt to the damage type (physical / elemental / toxic) ,20,14,8,
 Adjust Weight,Ability,See Detail,1,1,2,3,4,5,Object Size Change (+/-),,,"Works on physical objects. both organic and inorganic.
 The power allows the Hero to alter the Object Size of any object. 
 Once altered. the object operates at that Object Size for 1hour.
@@ -37,26 +37,26 @@ Cannot exceed Max HP. defined by rank
 Action to activate/deactivate
 ",,,,Armor that grows more powerful over time
 Bark Armor,Buff,,1,1,1,2,2,3,Regen HP,,,,,,,
-Big Mitts,Buff,Passive,,,,,,,,,,"Upgrade Unarmed Melee attack
+Big Mitts,Buff,Passive,2,2,2,2,2,2,DMG,passive unarmed,,"Upgrade Unarmed Melee attack
 +2 Grip checks
 Unable to manipulate small items (smaller than a banana). It's like wearing very heavy gloves. 
 Hero cannot pass for a human without disguising or hiding the hands somehow
 ",5,,,Big. gorilla-like hands that hit hard. grip well. and look ridiculous
-Biological Redundancy,Buff,Passive,,,,,,,,,,+5 Max HP,8,,,The Hero’s body develops redundant systems. allowing him to survive damage that would take a normal human out of commission.
-Biotoxin,Buff,Passive,1,1,1,2,2,3,DMG per counter,,,"Applied to all unarmed melee strikes  Poisoned Attacks add a Neurotoxin counter if the target loses HP.
+Biological Redundancy,Buff,Passive,,,,,,,,passive hp,,+5 Max HP,8,,,The Hero’s body develops redundant systems. allowing him to survive damage that would take a normal human out of commission.
+Biotoxin,Buff,,1,1,1,2,2,3,DMG per counter,passive unarmed,,"Applied to all unarmed melee strikes  Poisoned Attacks add a Neurotoxin counter if the target loses HP.
 On upkeep. poisoned targeted make a CON check:
 Pass: Remove Biotoxin counters;
 Fail: Take Biotoxin damage for each Biotoxin counter.
 ",10,,,
 Biotoxin,Buff,,7,8,9,15,20,30,DC,,,,,,,
-Bound,Ability,Move,0,2,3,4,5,6,Movement Bonus,,,"Movement bonus applies to AGI movement
+Bound,Buff,,0,2,3,4,5,6,Movement Bonus,passive move,,"Movement bonus applies to AGI movement
 Can move vertically
 ",15,N/A,N/A,The hero can bound around the battlefield like a lemur
-Breathless,Buff,Passive,,,,,,,,,,"The Hero doesn’t need to breathe. He is immune to asphyxiation. drowning. choking. etc.
+Breathless,Buff,Passive,,,,,,,No Breathing,passive,,"The Hero doesn’t need to breathe. He is immune to asphyxiation. drowning. choking. etc.
 The hero still has working lungs and may breathe voluntarily. however. he will not breathe automatically
 This makes him effectively immune to airborne effects
 ",1,,,
-Burrow,Ability,Action,2,6,8,10,12,14,Movement,,,"As a PA. the Hero can burrow underground in all but the most unwelcoming terrain. 
+Burrow,Ability,Action,2,6,8,10,12,14,Movement,,burrowed,"As a PA. the Hero can burrow underground in all but the most unwelcoming terrain. 
 Once underground. Burrow provides a PA movement ability which allows him to move in any direction.
 ",5,,,
 Claws,Ability,Flash,,,,,,,,,,"Extend/Retract Claws
@@ -65,6 +65,7 @@ While Claws are extended: Upgrade Melee Dice
 If the Hero selects the (Toxic) version. the Hero can select one Toxin. 
 Claws deliver the chosen Toxin.
 ",5,,,
+Claws,Buff,,2,2,2,2,2,2,DMG,unarmed,claws are out,,,,,
 Cleanse,Ability,Action,2,5,10,25,50,75,Range (m),,,"Radial AoE; Hero is the epicenter. All targets in range may make a CON Check + Cleanse CON bonus. 
 This check roll may shed Toxin effects.
 At r0. Cleanse heals all human (i.e. non-super powered) ailments and poisoning.
