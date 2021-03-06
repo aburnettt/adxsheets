@@ -1,0 +1,83 @@
+Stat,Attribute,Row,Action,Puny,H-,H,H+,r1,r2,r3,r4,r5,Effect,Condition,Tags,Detail,Lore
+CON,Hit Points,Natural,,6,8,12,16,40,80,120,160,200,HP,,hp,Controls Nat HP & KBR,
+CON,Knockback Resistance,Natural,,0,2,4,5,12,18,22,30,40,KBR,,kbr,,
+CON,Brace,Ability,Action,X,,,,,,,,,Activate Brace,,,"While active:
++KBR
++DS vs P & E DMG
+Brace ends if the hero moves for any reason",
+CON,Brace,Buff,,X,2,4,6,12,18,22,30,40,KBR,bracing,,,
+CON,Brace,Buff,,X,0,0,0,2,3,4,5,6,DS,bracing,,,
+CON,CON Check,Check,,1,1d12-5,1d12,1d12+5,1d12+10,1d12+15,1d12+20,1d12+25,1d12+30,Check,,con,"Resist poison, nausea, pain, bright light, and other physical and sensory trauma",
+AGI,Standing EL,Natural,,5,8,10,12,15,19,25,35,50,Standing EL,,el,Requires 2 locomotive limbs,
+AGI,Prone EL,Natural,,0,0,1,2,5,9,15,25,40,Prone EL,,el,No limbs required,
+AGI,Dodge,Ability,Flash,X,X,X,1,2,3,3,4,5,Distance,,,Requires 2 locomotive limbs,
+AGI,Dodge,Buff,,X,X,X,0,1d6,1d6,2d6,2d6,3d6,EL,dodging,el,,
+AGI,Rise from Prone,Ability,Special,PA,PA,PA,PA,Automatically on a Move,Automatically on a Move,Automatically on a Flash,Automatically on a Flash,Automatically on a Flash,Rise from prone,,,Rise from downed position,
+AGI,Tech Roll,Buff,,0,0,1,2,3,5,7,9,12,Fall damage ignored,,,"If Fall Damage is equal to or less than the Tech Roll numbers (below), the Hero avoids all damage. 
+If Fall Damage exceeds the Tech Roll numbers, the Hero takes all damage. 
+Fall Damage:
+1-4m: No Damage
+5-9m: 1d6 DMG
+10-14m: 2d6 DMG
+15-19m: 3d6 DMG etc...
+",
+AGI,Run,Ability,Move,3,4,5,6,7,8,9,10,12,Distance,,,Requires two locomotive limbs,
+AGI,Crawl/Roll,Ability,Move,0,1,1,1,2,3,4,5,6,Distance,,,No limbs required,
+AGI,Long Jump,Ability,Move,0,1,2,3,4,5,6,7,9,Distance,,,"This represents how far a Hero can jump.
+Can clear gaps and hurdle obstacles shorter than 'vertical jump' height
+Requires 2 locomotive limbs
+",
+AGI,Vertical Jump,Ability,Move,0,0,0,1,2,2,3,,,Distance,,,"Defines how high a Hero can jump
+Requires 2 locomotive limbs",
+AGI,AGI Check,Check,,1,1d12-5,1d12,1d12+5,1d12+10,1d12+15,1d12+20,1d12+25,1d12+30,-,,,,
+STR,Unarmed Strike,Ability,Action,1d4-2,1d4-1,1d4,1d4+1,1d6+1,1d6+3,2d6+1,2d6+7,3d6+6,DMG or KB,,unarmed melee atk,Requires 1 prehensile limb,
+STR,Throw,Ability,Action,1d4-2,1d4-1,1d4,1d4+1,1d6+1,1d6+3,2d6+1,2d6+7,3d6+6,DMG,,throw weapon atk,Requires 1 prehensile limb,
+STR,Throw,Ability,Action,Tiny,Tiny,Tiny,Small,Med,Lg,Lg,XL,XXL,Max Item Size,,,"The stat lists the max item size the hero can throw
+
+",
+STR,Weapon Strike,Ability,Action,1d4-2,1d4-1,1d4,1d4+1,1d6+1,1d6+3,2d6+1,2d6+7,3d6+6,DMG,,melee weapon atk,Requires 1 prehensile limb,
+STR,Weapon Strike,Buff,,Small,Small,Small,Med,Lg,XL,XL,XXL,Huge,Max 1H Item Size,,,"Requires 1 prehensile limb
+Rank lists max weapon size",
+STR,Weapon Strike,Buff,,Small,Small,Med,Lg,XL,XL,XXL,Huge,Huge,Max 2H Item Size,,,"Requires 2 prehensile limbs
+Rank lists max weapon size",
+STR,Catch,Ability,Flash,-,-,Tiny,Small,Med,Lg,Lg,XL,XXL,Max Item Size,,atk,"The stat lists the max item size the hero can catch. 
+To Catch, the Hero rolls an unarmed melee ATK against an incoming projectile
+If the Hero's ATK beats the projectile's ATK, the item is caught and deals no damage.
+",
+STR,Carry,Buff,,10,10,20,40,300,500,1000,3000,10000,Max Unencumbered (lbs),,,"The Hero can act normally (e.g., Attack, Dodge, Move) whilst carrying objects up to his max unencumbered weight.
+Carrying an object may occupy the Hero's limbs. Even if he has sufficient strength, this may prevent him from performing the desired action
+",This represents the max weight that the Hero can carry while acting freely. 
+STR,Lift,Ability,Channel,Med,Med,Lg,XL,XXL,XXL,Huge,Huge,Huge,Max Item Size,,,"Requires 2 prehensile limbs
+This represents the max weight the Hero can carry if he dedicated himself fully to the task (Channeling). 
+Anything above Unencumbered and up to Max Carry limit requires a Channel Action. 
+Normal Concentration checks apply while the Hero is holding.
+",
+STR,Leap,Ability,Action,-,-,-,-,4,5,6,7,8,Movement,,,"Unlike most movement, Leap is an Action. 
+When the Hero leaps, he declares his destination, and how many rounds he will spend in the air. This decision is limited by his Distance and Hangtime attributes.
+Distance determines how far the Hero can move per round
+Hangtime determines the max amount of time a Hero can spend in the air. 
+Once a Leap is declared, the Hero may not change his target or decide to land early. 
+A Leap may ignore obstacles whose height is less than or equal to the Distance attribute.
+The Hero may perform Actions and Moves as normal on subsequent turns, though he may not perform grounded actions. If he becomes grounded, the Leap ends immediately.
+All melee attacks made upon landing count as a single-hex AoE.
+This attack receives a damage buff: 
+1d4 (c) per round spent in the air.
+Partial Effect: Targets avoid 50% DMG
+The Hero maintains his Leap even if damaged; however, the Hero remains susceptible to Knock back.
+",
+STR,Leap,Buff,,-,-,-,-,1,2,2,3,4,Hangtime,leaping,,,
+STR,STR Check,Check,,1,1d12-5,1d12,1d12+5,1d12+10,1d12+15,1d12+20,1d12+25,1d12+30,,,,,
+INT,INT Check,Check,,1,1d12-5,1d12,1d12+5,1d12+10,1d12+15,1d12+20,1d12+25,1d12+30,,,,,
+LCK,LUCK Check,Check,,1,1d12-5,1d12,1d12+5,1d12+10,1d12+15,1d12+20,1d12+25,1d12+30,,,,,
+STR,Reverse Grapple,Ability,Action,,,,,,,,,,,,,,
+STR,Grab,Ability,Action,,,,,,,,,,Grabs target,,atk grab,"The Hero makes an ATK Roll and a STR check
+Defender makes a STR check. 
+If both win, the target is grabbed and bound to the Hero",
+STR,Bear Hug,Ability,Flash,-,,,,,,,,,Pin limbs and deal damage,,,"Requires Control in a Grapple
+Deals Unarmed Strike Damage
+Grapple remains in effect
+Bind DC: 
+Upon declaring the Bear Hug, The Hero may immediatley begin Channeling. If so, The Hero may roll a Grip Check whenever the target makes an Escape or Reverse Control attempt.
+If the Hero is not Channeling, the Bind DC is as if the Hero rolled a 1 on a Grip Check.
+Req 2 prehensile limbs or 1 extra-long limb",
+STR,Climb,Ability,Move,0,1,2,3,4,5,6,7,8,Distance,on climbable surface,,,

@@ -1,65 +1,57 @@
 Power,Row,Action,r0,r1,r2,r3,r4,r5,Effect,Tags,Condition,Detail,Major,Minor,Lesser,Lore
-Active Healing,Ability,Action,1d4,1d4+1,2d4+1,2d6+2,3d6+5,4d4+10,Heal,heal,,If the Hero is at full HP. he can heal a missing limb over a Long Rest,35,25,14,The Hero can regenerate his wounds as an action.
-Adaptive Skin,Ability,Flash,,,,,,,Adapt,,after taking damage,Adapt to the damage type (physical / elemental / toxic) ,20,14,8,
-Adaptive Skin,Buff,,2,4,5,7,10,15,DS,ds,adapted to damage type,"Whenever the Hero incurs damage. he may adapt to that damage type. gaining a bonus to Natural DS.
-This bonus remains in effect until the Hero chooses to drop the resistance.
+Active Healing,Ability,Action,1d4,1d4+1,2d4+1,2d6+2,3d6+5,4d4+10,Heal,,,If the Hero is at full HP. he can heal a missing limb over a Long Rest,35,25,14,The Hero can expend effort to closing his body's wounds and repairing damage
+Adaptive Skin,Ability,Flash,,,,,,,Adapt to damage type,,after taking damage,"After adapting. hero has a DS against that damage type (physical / elemental / toxic) 
 The Hero may elect to drop the resistance at any time.
 If the Hero incurs damage from a different damage type. he may elect to switch resistance to this new damage type.
 The switch occurs at the conclusion of the instance.
-While a resistance is up. the Hero has the NHL trait.
+While a resistance is up. the Hero has changed visibly and looks inhuman
 Each resistance has a unique visibility marker. identifying to the world which resistance is currently active.
-Player & GM work together to determine the specifics.
-",,,,
-Adjust Weight,Ability,See Detail,1,1,2,3,4,5,Object Size Change (+/-),,,"Works on physical objects. both organic and inorganic.
+Player & GM work together to determine the specifics.",20,14,8,
+Adaptive Skin,Buff,,2,4,5,7,10,15,DS,ds,adapted to damage type,,,,,
+Adjust Weight,Ability,Special,1,1,2,3,4,5,Object Size Change (+/-),,,"Works on physical objects. both organic and inorganic.
 The power allows the Hero to alter the Object Size of any object. 
 Once altered. the object operates at that Object Size for 1hour.
-Action to Alter Weight:
-r0: 1rnd Channel
-r1: Action
-r5: Flash
+
 ",15,11,6,The Hero adjusts the weight of an object
-Armadillo Ball,Ability,Action,,,,,,,,,,"Hero can curl into a ball slightly larger than his own head (size of a basketball for an average human).
-Curling and uncurling cost a PA.
+Adjust Weight,Buff,,Channel,Action,Action,Action,Action,Flash,,,,,,,,
+Armadillo Ball,Ability,Action,,,,,,,Curl into a ball,,,"Hero can curl into a ball slightly larger than his own head (size of a basketball for an average human).
 Cannot use any limbs while in ball form
 DS +2 while in ball form
 Hero is blind while in ball form
+Hero is 1 size smaller while curled
 ",6,,,
-Armadillo Ball,Buff,,2,,,,,,DS. blind. shrink,,,,,,,
-Audio Mimicry,Buff,,,,,,,,Mimic any sound,,,"The Hero can mimic any voice. generate any sound. or play any music he desires. Max volume is about the same as a human full yell
-The Hero can perfectly imitate any sound he has heard only once
-The Hero can speak freely in someone else's voice if he has heard them speak a few sentences
-",4,,,
-Bark Armor,Ability,Action,0,0,2,4,6,10,Starting HP,,,,25,18,10,
-Bark Armor,Buff,,2,6,10,15,20,30,Max HP,,,"Action activates Bark Armor
-Starting HP based on rank
-Bark Armor regens on upkeep
-Cannot exceed Max HP. defined by rank
-Action to activate/deactivate
-",,,,Armor that grows more powerful over time
-Bark Armor,Buff,,1,1,1,2,2,3,Regen HP,,,,,,,
-Big Mitts,Buff,Passive,2,2,2,2,2,2,DMG,passive unarmed,,"Upgrade Unarmed Melee attack
+Armadillo Ball,Buff,,2,2,2,2,2,2,DS,,curled into ball,,,,,
+Audio Mimicry,Buff,,,,,,,,Mimic any sound,,,,4,,,
+Bark Armor,Ability,Action,2,6,10,15,20,30,Armor Max HP,,,"When activated. Bark Armor starts at its starting HP. 
+Bark Armor regens on upkeep up to its max HP
+When its HP reaches 0. Bark Armor is destroyed and no longer regens. Hero must reactivate
+",25,18,10,Armor that grows more powerful over time
+Bark Armor,Buff,,0,0,2,4,6,10,Armor Starting HP,,,,,,,
+Bark Armor,Buff,,1,1,1,2,2,3,Armor Regen,,armor is active,,,,,
+Big Mitts,Buff,,2,2,2,2,2,2,DMG,unarmed,striking unarmed,"Upgrade Unarmed Melee attack
 +2 Grip checks
 Unable to manipulate small items (smaller than a banana). It's like wearing very heavy gloves. 
 Hero cannot pass for a human without disguising or hiding the hands somehow
 ",5,,,Big. gorilla-like hands that hit hard. grip well. and look ridiculous
-Biological Redundancy,Buff,Passive,,,,,,,,passive hp,,+5 Max HP,8,,,The Hero’s body develops redundant systems. allowing him to survive damage that would take a normal human out of commission.
-Biotoxin,Buff,,1,1,1,2,2,3,DMG per counter,passive unarmed,,"Applied to all unarmed melee strikes  Poisoned Attacks add a Neurotoxin counter if the target loses HP.
-On upkeep. poisoned targeted make a CON check:
-Pass: Remove Biotoxin counters;
-Fail: Take Biotoxin damage for each Biotoxin counter.
-",10,,,
-Biotoxin,Buff,,7,8,9,15,20,30,DC,,,,,,,
-Bound,Buff,,0,2,3,4,5,6,Movement Bonus,passive move,,"Movement bonus applies to AGI movement
+Biological Redundancy,Buff,,5,5,5,5,5,5,HP,passive hp,,+5 Max HP,8,,,The Hero’s body develops redundant systems. allowing him to survive damage that would take a normal human out of commission.
+Biotoxin,Buff,,1,1,1,2,2,3,DMG per counter,unarmed,victim poisoned,"On upkeep. poisoned targeted makes a CON check
+Pass: Remove Biotoxin counters
+Fail: Take Biotoxin damage for each Biotoxin counter
+",,,,
+Biotoxin,Buff,,7,8,9,15,20,30,DC,passive unarmed,dealing unarmed damage,"After any unarmed melee strike deals damage, target makes a CON check vs DC 
+Success = target gains a Biotoxin counter
+Failure = nothing happens",10,,,
+Bound,Buff,,0,2,3,4,5,6,Movement Bonus,move,,"Movement bonus applies to AGI movement
 Can move vertically
 ",15,N/A,N/A,The hero can bound around the battlefield like a lemur
-Breathless,Buff,Passive,,,,,,,No Breathing,passive,,"The Hero doesn’t need to breathe. He is immune to asphyxiation. drowning. choking. etc.
+Breathless,Buff,,,,,,,,No need to breathe,passive,,"The Hero doesn’t need to breathe. He is immune to asphyxiation. drowning. choking. etc.
 The hero still has working lungs and may breathe voluntarily. however. he will not breathe automatically
 This makes him effectively immune to airborne effects
 ",1,,,
 Burrow,Ability,Action,2,6,8,10,12,14,Movement,,burrowed,"As a PA. the Hero can burrow underground in all but the most unwelcoming terrain. 
 Once underground. Burrow provides a PA movement ability which allows him to move in any direction.
 ",5,,,
-Claws,Ability,Flash,,,,,,,,,,"Extend/Retract Claws
+Claws,Ability,Flash,,,,,,,Extend/Retract Claws,,,"Extend/Retract Claws
 Flash
 While Claws are extended: Upgrade Melee Dice
 If the Hero selects the (Toxic) version. the Hero can select one Toxin. 
