@@ -20,6 +20,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 interface IProps {
     ability: any
+    color: string
 }
 
 interface IState {
@@ -34,20 +35,21 @@ export default class Ability extends React.Component<IProps, IState> {
         };
     }
 
-
     render() {
         var a = this.props.ability as any;
+
+
         return (
-            <TableBody>
-                <TableRow><strong>{a["name"]}</strong></TableRow>
+            <TableBody style={{ backgroundColor: this.props.color }}>
+                <TableRow ><TableCell ><h5 >{a["name"]}</h5></TableCell></TableRow>
                 <TableRow>
-                    <TableCell>
+                    <TableCell padding="none">
                         {a["action"]}
                     </TableCell>
-                    <TableCell>
+                    <TableCell padding="none">
                         {a["atk"]}
                     </TableCell>
-                    <TableCell>
+                    <TableCell padding="none" >
                         {a["dmg"] + " " + a["effect"]}
                         {a["detail"] && a["detail"].length > 0 && (
                             <Tooltip title={a["detail"].replaceAll("\"", "")} arrow interactive>
@@ -59,14 +61,15 @@ export default class Ability extends React.Component<IProps, IState> {
                 {a["bufflines"].length > 0 &&
                     (a["bufflines"] as any[]).map((buff, i) => {
                         return (
-                            <TableRow><small>
-                                {buff["value"] +
-                                    " " +
-                                    buff["effect"] +
-                                    (buff["condition"].length > 0 ? " when " + buff["condition"] : "") +
-                                    (buff["power"] === a["name"] ? "" : " from " + buff["power"])
-                                }
-                            </small>
+                            <TableRow>
+                                <TableCell padding="none">
+                                    {buff["value"] +
+                                        " " +
+                                        buff["effect"] +
+                                        (buff["condition"].length > 0 ? " when " + buff["condition"] : "") +
+                                        (buff["power"] === a["name"] ? "" : " from " + buff["power"])
+                                    }
+                                </TableCell>
                             </TableRow>)
                     })}
             </TableBody>);

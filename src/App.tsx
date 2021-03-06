@@ -318,12 +318,12 @@ export default class App extends React.Component<IProps, IState> {
 
         if (power["Row"] === "Buff") {
           var tags: string[] = power["Tags"].split(" ");
-          var detail = power["Detail"];
           var buff = {
             power: power["Power"],
             effect: power["Effect"],
             value:  power["r" + rank],
             condition: power["Condition"],
+            detail: power["Detail"],
             tags: (power["Tags"].length > 0) ? (power["Tags"].split(" ")) : []
           }
           //if there is a passive tag

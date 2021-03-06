@@ -6,11 +6,12 @@ import { Button } from '@material-ui/core';
 const NavBar = ({ toggleManagePowers , toggleManageArch}) => {
   return (
     <nav className="navbar navbar-light bg-light">
-      <div className="navbar-brand">
+      <div className="navbar-brand" padding="normal">
         <Button
           color="primary"
           variant="contained"
-          onClick={toggleManagePowers}> Powers </Button>
+          onClick={toggleManagePowers}> Powers </Button> 
+          &nbsp;
         <Button
           color="primary"
           variant="contained"

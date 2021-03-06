@@ -20,6 +20,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 interface IProps {
     buff: any
+    color: string
 }
 
 interface IState {
@@ -49,7 +50,8 @@ export default class Buff extends React.Component<IProps, IState> {
         var condition = (b.condition && b.condition.length > 0) ? " when " + b.condition : "";
         var byline = "From " + b.power;
 
-        return (<div>{text}{condition}
+        return (<div style={{ backgroundColor: this.props.color }}>
+            {text}{condition}
         <br />
             <small>{byline}</small>
         </div>);
