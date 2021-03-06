@@ -4,7 +4,6 @@ import ManagePowersPanel from "./components/ManagePowersPanel";
 import ManageArchPanel from "./components/ManageArchPanel";
 
 import InfoPanel from "./components/InfoPanel";
-import { stringNumberComparer } from "@material-ui/data-grid";
 
 interface IArch {
   name: string
@@ -183,6 +182,19 @@ export default class App extends React.Component<IProps, IState> {
     );
   }
 
+  getRank = (parsedArch: IArch, tier: number) => {
+    switch (tier) {
+      case 1:
+        return (parsedArch.lesserRank);
+      case 2:
+        return (parsedArch.minorRank);
+      case 3:
+        return (parsedArch.majorRank);
+      default:
+        return 0;
+    }
+  }
+
   //var csv is the CSV file with headers
   public csvToJson(csv: string) {
 
@@ -263,28 +275,17 @@ export default class App extends React.Component<IProps, IState> {
       }
     });
 
+//digest stats
+
+
+
     var abilities: any[] = [];
-    var buffs: any[] = [];
-    //todo - get Powers to give you the appropriate abilities and buffs
+    var passiveBuffs: any[] = [];
     this.state.powerData.forEach(power => {
       if (sp[power["Power"]] &&
         sp[power["Power"]] > 0 &&
         parsedArch) {
-        var rank = 0;
-        switch (sp[power["Power"]]) {
-          case 1:
-            rank = parsedArch.lesserRank;
-            break;
-          case 2:
-            rank = parsedArch.minorRank;
-            break;
-          case 3:
-            rank = parsedArch.majorRank;
-            break;
-          default:
-            //do nothing
-            break;
-        }
+        var rank = this.getRank(parsedArch, sp[power["Power"]]);
         if (power["Row"] === "Ability") {
           var ability = {
             "name": power["Power"],
@@ -293,22 +294,77 @@ export default class App extends React.Component<IProps, IState> {
             "atk": "1d20",
             "effect": power["Effect"],
             "detail": power["Detail"],
-            "tags": power["Tags"].split(" "),
-            "condition": power["Condition"]
+            "tags": ((power["Tags"].length > 0) ? (power["Tags"].split(" ")) : []),
+            "condition": power["Condition"],
+            "bufflines": []
           };
 
           abilities.push(ability);
-        } else if (power["row"] === "Buff") {
-          //todo
         }
       }
     });
 
-    //todo - apply buffs
+    //loop through again, looking for buffs
+    //B: all buffs that apply to abilities will appear as a buffline below the ability
+    // loop through buffs. for each, loop through abilities looking for tags
+    // if a tag exists, add a buffline. Also update atk/effect fields
+    // left side still shows universal buffs
+
+    this.state.powerData.forEach(power => {
+      if (sp[power["Power"]] &&
+        sp[power["Power"]] > 0 &&
+        parsedArch) {
+        var rank = this.getRank(parsedArch, sp[power["power"]]);
+
+        if (power["Row"] === "Buff") {
+          var tags: string[] = power["Tags"].split(" ");
+          var detail = power["Detail"];
+          var buff = {
+            power: power["Power"],
+            effect: power["Effect"],
+            value:  power["r" + rank],
+            condition: power["Condition"],
+            tags: (power["Tags"].length > 0) ? (power["Tags"].split(" ")) : []
+          }
+          //if there is a passive tag
+          if (buff.tags.includes("passive")) {
+            passiveBuffs.push(buff);
+          }
+          abilities.map((a, i) => {
+            if (a["name"] === buff.power){
+              a["bufflines"].push(buff);
+            }else if (a["tags"].length > 0) {
+              var aTags: string[] = a["tags"];
+              aTags.forEach(tag => {
+                if (tags.includes(tag)) {
+                  switch (buff.effect) {
+                    case "Priority":
+                      a["atk"] = buff.value;
+                      break;
+                    case "ATK":
+                      a["atk"] += "+" + buff.value;
+                      break;
+                    case "DMG":
+                      a["dmg"] += "+" + buff.value;
+                      break;
+                    default:
+                      //do nothing, buffline will convey meaning
+                      break;
+                  }
+                  a["bufflines"].push(buff);
+                }
+              });
+            }
+          })
+        }
+      }
+    });
+
+
 
     this.setState({
       parsedAbilities: abilities,
-      parsedBuffs: buffs,
+      parsedBuffs: passiveBuffs,
       parsedArch: parsedArch
     })
 
