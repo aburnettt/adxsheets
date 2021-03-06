@@ -275,6 +275,10 @@ export default class App extends React.Component<IProps, IState> {
       }
     });
 
+//digest stats
+
+
+
     var abilities: any[] = [];
     var passiveBuffs: any[] = [];
     this.state.powerData.forEach(power => {
@@ -319,13 +323,12 @@ export default class App extends React.Component<IProps, IState> {
             power: power["Power"],
             effect: power["Effect"],
             value:  power["r" + rank],
-            condition: power["Condition"]
+            condition: power["Condition"],
+            tags: (power["Tags"].length > 0) ? (power["Tags"].split(" ")) : []
           }
           //if there is a passive tag
-          if (tags.includes("passive")) {
-            passiveBuffs.push({
-              buff
-            });
+          if (buff.tags.includes("passive")) {
+            passiveBuffs.push(buff);
           }
           abilities.map((a, i) => {
             if (a["name"] === buff.power){
@@ -358,7 +361,6 @@ export default class App extends React.Component<IProps, IState> {
     });
 
 
-    //todo - apply buffs
 
     this.setState({
       parsedAbilities: abilities,
