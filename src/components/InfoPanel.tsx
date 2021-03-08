@@ -15,9 +15,10 @@ import Buff from "./Buff";
 
 
 
+
 interface IProps {
-    abilities: any[]
-    buffs: any[]
+    abilities: Ability[]
+    buffs: Buff[]
 }
 
 interface IState {
@@ -34,56 +35,14 @@ export default class InfoPanel extends React.Component<IProps, IState> {
         };
     }
 
-
-    private nameToColor(name: string) {
-        //makes a light color from any string
-
-        //AABBCC RGB
-        //keep each between 00-3F
-        //
-
-        // var code = (Math.abs(this.hashCode(a["name"])).toString(10));
-        // var red = Math.round(Number(code.substr(0, 2)) / 3);
-        // var green = Math.round(Number(code.substr(2, 2)) / 3);
-        // var blue = Math.round(Number(code.substr(4, 2)) / 3);
-        // const color = "#" + 
-        // ((red < 10) ? "0" : "") + red + 
-        // ((green < 10) ? "0" : "") + green + 
-        // ((blue < 10) ? "0" : "") + blue;
-
-
-        var h = 0, l = name.length, i = 0;
-        if (l > 0)
-            while (i < l)
-                h = (h << 5) - h + name.charCodeAt(i++) | 0;
-        var code = (Math.abs(h).toString(16));
-        var red = (255 - (Math.round(parseInt(code.substr(0, 2), 16) / 2))).toString(16);
-        var green = (255 - (Math.round(parseInt(code.substr(2, 2), 16) / 2))).toString(16);
-        var blue = (255 - (Math.round(parseInt(code.substr(4, 2), 16) / 2))).toString(16);
-        const color = "#" + red + green + blue;
-        return color;
-    }
     render() {
-
-
-
-
-        var abilityHeaders: string[] = [
-            "Action",
-            "Atk",
-            "Effect"
-        ]
-
         return (
             <Box display="flex">
                 <Box minHeight="25%" width="30%" position="Left" display="flex">
                     <div style={{ width: '500px' }}>
                         <h3>Attributes</h3>
-                        {this.props.buffs.map((b, i) => {
-                            return (<Buff
-                                key={i}
-                                buff={b}
-                                color={this.nameToColor(b.effect)} />);
+                        {this.props.buffs.map((b: Buff, i) => {
+                            return b.render();
                         })}
                     </div>
                 </Box>
@@ -94,14 +53,10 @@ export default class InfoPanel extends React.Component<IProps, IState> {
                         <TableContainer >
                             <Table aria-label="simple table">
                                 {this.props.abilities.map((a, i) => {
-                                    return (<Ability key={i}
-                                        ability={a}
-                                        color={this.nameToColor(a.name)} />
-                                    )
+                                    return a.render();
                                 })}
                             </Table>
                         </TableContainer>
-
                     </div>
                 </Box>
             </Box >

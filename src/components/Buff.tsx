@@ -19,41 +19,62 @@ import TableRow from '@material-ui/core/TableRow';
 
 
 interface IProps {
-    buff: any
-    color: string
+    value: string,
+    effect: string,
+    condition: string,
+    source: string,
+    detail: string,
+    color: string,
+    tags: string[]
 }
 
-interface IState {
-
-}
-
-export default class Buff extends React.Component<IProps, IState> {
+export default class Buff extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);
-        this.state = {
-        };
     }
 
 
-    render() {
-        var b = this.props.buff as any;
-        /*
-            var buff = {
-            power: power["Power"],
-            effect: power["Effect"],
-            value:  power["r" + rank],
-            condition: power["Condition"]
-          }
-        */
-        var text = b.value + " " + b.effect;
-        var condition = (b.condition && b.condition.length > 0) ? " when " + b.condition : "";
-        var byline = "From " + b.power;
+    public render() {
+        var text = this.props.value + " " + this.props.effect;
+        var condition = (this.props.condition.length > 0) ? " when " + this.props.condition : "";
+        var byline = "From " + this.props.source;
 
         return (<div style={{ backgroundColor: this.props.color }}>
             {text}{condition}
-        <br />
+            <br />
             <small>{byline}</small>
         </div>);
+    }
+
+    public renderAsBuffline(abilityName: string) {
+        return (<TableRow>
+            <TableCell padding="none">
+                {this.props.value +
+                    " " +
+                    this.props.effect +
+                    (this.props.condition.length > 0 ? " when " + this.props.condition : "") +
+                    (this.props.source === abilityName ? "" : " from " + this.props.source)
+                }
+            </TableCell>
+        </TableRow>);
+    }
+
+    public includesTags(tag : string[]) {
+        var includes = false;
+        tag.forEach(t => {
+            if (this.includesTag(t)){
+                return true;
+            }
+        });
+        return false;
+    }
+
+    public includesTag(tag : string) {
+        return this.props.tags.includes(tag);
+    }
+
+    public getSource(){
+        return this.props.source;
     }
 }

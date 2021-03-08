@@ -4,6 +4,8 @@ import ManagePowersPanel from "./components/ManagePowersPanel";
 import ManageArchPanel from "./components/ManageArchPanel";
 
 import InfoPanel from "./components/InfoPanel";
+import Buff from "./components/Buff";
+import Ability from "./components/Ability";
 
 interface IArch {
   name: string
@@ -24,9 +26,9 @@ interface IState {
   level: number
   powerData: any[]
   archData: any[]
-  parsedAbilities: any[]
-  parsedBuffs: any[]
-  parsedArch: IArch | null
+  abilities: Ability[]
+  buffs: Buff[]
+  arch: IArch | null
 }
 
 interface IProps {
@@ -45,9 +47,9 @@ export default class App extends React.Component<IProps, IState> {
       level: 1,
       powerData: [],
       archData: [],
-      parsedAbilities: [],
-      parsedBuffs: [],
-      parsedArch: null
+      abilities: [],
+      buffs: [],
+      arch: null
     }
 
   }
@@ -108,17 +110,17 @@ export default class App extends React.Component<IProps, IState> {
         <main className="container">
           {this.state.selectedArch == "" ? (<strong>Select an Archetype</strong>) :
             (<InfoPanel
-              abilities={this.state.parsedAbilities}
-              buffs={this.state.parsedBuffs}
+              abilities={this.state.abilities}
+              buffs={this.state.buffs}
             />)}
         </main>
         {
           this.state.showManagePowersPanel &&
-          this.state.parsedArch &&
+          this.state.arch &&
           (<ManagePowersPanel
             powerData={this.state.powerData}
             selectedPowers={this.state.selectedPowers}
-            totalCP={this.state.parsedArch.characterPoints}
+            totalCP={this.state.arch.characterPoints}
             handleConfirm={(selectedPowers: any) =>
               this.updateSelectedPowers(selectedPowers)
             }
@@ -130,7 +132,7 @@ export default class App extends React.Component<IProps, IState> {
           (<ManageArchPanel
             archData={this.state.archData}
             selectedArch={this.state.selectedArch}
-            level={this.state.parsedArch ? this.state.parsedArch.level : 1}
+            level={this.state.arch ? this.state.arch.level : 1}
             handleConfirm={(name: string, level: number) =>
               this.updateSelectedArch(name, level)
             }
@@ -197,33 +199,22 @@ export default class App extends React.Component<IProps, IState> {
 
   //var csv is the CSV file with headers
   public csvToJson(csv: string) {
-
     var lines = csv.split("\r\n");
-
     var result = [];
-
     //todo would be nice to support commas in data
     //by skipping escaped commas
     var headers = lines[0].split(",");
-
     for (var i = 1; i < lines.length; i++) {
-
       var obj: any = {};
       var currentline = lines[i].split(",");
-
       for (var j = 0; j < headers.length; j++) {
         obj[headers[j]] = currentline[j];
       }
-
       result.push(obj);
-
     }
-
     return result;
     //return JSON.stringify(result); //JSON
   }
-
-
 
   private parseData(sp: any = this.state.selectedPowers, selectedArch: string = this.state.selectedArch, level: number = this.state.level) {
     if (selectedArch === "" ||
@@ -275,29 +266,30 @@ export default class App extends React.Component<IProps, IState> {
       }
     });
 
-//digest stats
+    //digest stats
 
 
 
-    var abilities: any[] = [];
-    var passiveBuffs: any[] = [];
+    var abilities: Ability[] = [];
+    var passiveBuffs: Buff[] = [];
     this.state.powerData.forEach(power => {
       if (sp[power["Power"]] &&
         sp[power["Power"]] > 0 &&
         parsedArch) {
         var rank = this.getRank(parsedArch, sp[power["Power"]]);
         if (power["Row"] === "Ability") {
-          var ability = {
-            "name": power["Power"],
-            "action": power["Action"],
-            "dmg": power["r" + rank],
-            "atk": "1d20",
-            "effect": power["Effect"],
-            "detail": power["Detail"],
-            "tags": ((power["Tags"].length > 0) ? (power["Tags"].split(" ")) : []),
-            "condition": power["Condition"],
-            "bufflines": []
-          };
+          var ability = new Ability({
+            action: power["Action"],
+            name: power["Power"],
+            value: power["r" + rank],
+            effect: power["Effect"],
+            detail: power["Detail"],
+            tags: ((power["Tags"].length > 0) ? (power["Tags"].split(" ")) : []),
+            condition: power["Condition"],
+            buffs: [],
+            color: this.nameToColor(power["Power"])
+          });
+
 
           abilities.push(ability);
         }
@@ -318,56 +310,49 @@ export default class App extends React.Component<IProps, IState> {
 
         if (power["Row"] === "Buff") {
           var tags: string[] = power["Tags"].split(" ");
-          var buff = {
-            power: power["Power"],
+          var buff = new Buff({
+            source: power["Power"],
             effect: power["Effect"],
-            value:  power["r" + rank],
+            value: power["r" + rank],
             condition: power["Condition"],
             detail: power["Detail"],
-            tags: (power["Tags"].length > 0) ? (power["Tags"].split(" ")) : []
-          }
+            tags: (power["Tags"].length > 0) ? (power["Tags"].split(" ")) : [],
+            color: this.nameToColor(power["Power"])
+          });
           //if there is a passive tag
-          if (buff.tags.includes("passive")) {
+          if (buff.includesTag("passive")) {
             passiveBuffs.push(buff);
           }
           abilities.map((a, i) => {
-            if (a["name"] === buff.power){
-              a["bufflines"].push(buff);
-            }else if (a["tags"].length > 0) {
-              var aTags: string[] = a["tags"];
-              aTags.forEach(tag => {
-                if (tags.includes(tag)) {
-                  switch (buff.effect) {
-                    case "Priority":
-                      a["atk"] = buff.value;
-                      break;
-                    case "ATK":
-                      a["atk"] += "+" + buff.value;
-                      break;
-                    case "DMG":
-                      a["dmg"] += "+" + buff.value;
-                      break;
-                    default:
-                      //do nothing, buffline will convey meaning
-                      break;
-                  }
-                  a["bufflines"].push(buff);
-                }
-              });
-            }
-          })
+            a.tryOnBuff(buff);
+          });
+
         }
       }
     });
 
 
-
     this.setState({
-      parsedAbilities: abilities,
-      parsedBuffs: passiveBuffs,
-      parsedArch: parsedArch
+      abilities: abilities,
+      buffs: passiveBuffs,
+      arch: parsedArch
     })
 
 
+  }
+
+  private nameToColor(name: string) {
+    //makes a light color from any string
+
+    var h = 0, l = name.length, i = 0;
+    if (l > 0)
+      while (i < l)
+        h = (h << 5) - h + name.charCodeAt(i++) | 0;
+    var code = (Math.abs(h).toString(16));
+    var red = (255 - (Math.round(parseInt(code.substr(0, 2), 16) / 2))).toString(16);
+    var green = (255 - (Math.round(parseInt(code.substr(2, 2), 16) / 2))).toString(16);
+    var blue = (255 - (Math.round(parseInt(code.substr(4, 2), 16) / 2))).toString(16);
+    const color = "#" + red + green + blue;
+    return color;
   }
 }
