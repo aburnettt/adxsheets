@@ -2,10 +2,11 @@ import React from "react";
 import NavBar from "./components/NavBar";
 import ManagePowersPanel from "./components/ManagePowersPanel";
 import ManageArchPanel from "./components/ManageArchPanel";
-
+import ManageStatsPanel from "./components/ManageStatsPanel";
 import InfoPanel from "./components/InfoPanel";
 import Buff from "./components/Buff";
 import Ability from "./components/Ability";
+import Natural from "./components/Natural";
 
 interface IArch {
   name: string
@@ -21,13 +22,17 @@ interface IArch {
 interface IState {
   showManagePowersPanel: boolean
   showManageArchPanel: boolean
+  showManageStatsPanel: boolean
   selectedPowers: any
   selectedArch: string
   level: number
   powerData: any[]
   archData: any[]
+  statData: any[]
+  selectedStats: any
   abilities: Ability[]
   buffs: Buff[]
+  naturals: Natural[]
   arch: IArch | null
 }
 
@@ -42,22 +47,26 @@ export default class App extends React.Component<IProps, IState> {
     this.state = {
       showManagePowersPanel: false,
       showManageArchPanel: false,
+      showManageStatsPanel: false,
       selectedPowers: {},
       selectedArch: "",
+      selectedStats: {},
       level: 1,
       powerData: [],
       archData: [],
+      statData: [],
       abilities: [],
       buffs: [],
+      naturals: [],
       arch: null
     }
-
   }
 
   componentDidMount() {
     let archName = window.localStorage.getItem("selectedArch");
     let level = window.localStorage.getItem("level");
     let sp = window.localStorage.getItem("selectedPowers");
+    let ss = window.localStorage.getItem("selectedStats");
 
     if (archName) {
       this.setState({
@@ -74,6 +83,11 @@ export default class App extends React.Component<IProps, IState> {
         selectedPowers: JSON.parse(sp)
       })
     }
+    if (ss) {
+      this.setState({
+        selectedStats: ss
+      })
+    }
     fetch("https://raw.githubusercontent.com/aburnettt/adxsheets/master/src/data/powers.csv")
       .then((r) => r.text())
       .then(text => {
@@ -82,7 +96,14 @@ export default class App extends React.Component<IProps, IState> {
         });
         this.parseData();
       });
-
+    fetch("https://raw.githubusercontent.com/aburnettt/adxsheets/master/src/data/stats.csv")
+      .then((r) => r.text())
+      .then(text => {
+        this.setState({
+          statData: this.csvToJson(text)
+        });
+        this.parseData();
+      });
     fetch("https://raw.githubusercontent.com/aburnettt/adxsheets/master/src/data/arch.csv")
       .then((r) => r.text())
       .then(text => {
@@ -105,6 +126,9 @@ export default class App extends React.Component<IProps, IState> {
               toggleManageArch={
                 this.showManageArchPanel
               }
+              toggleManageStats={
+                this.showManageStatsPanel
+              }
             />
           )}
         <main className="container">
@@ -112,6 +136,7 @@ export default class App extends React.Component<IProps, IState> {
             (<InfoPanel
               abilities={this.state.abilities}
               buffs={this.state.buffs}
+              naturals={this.state.naturals}
             />)}
         </main>
         {
@@ -140,6 +165,20 @@ export default class App extends React.Component<IProps, IState> {
             }
           />)
         }
+        {
+          this.state.showManageStatsPanel &&
+          (<ManageStatsPanel
+            statData={this.state.statData}
+            selectedStats={this.state.selectedStats}
+            handleConfirm={(statd: any) =>
+              this.setState({
+                statData: statd
+              })
+            }
+            handleClose={() => this.closePanels()
+            }
+          />)
+        }
       </div >
     );
   }
@@ -150,6 +189,7 @@ export default class App extends React.Component<IProps, IState> {
       showManageArchPanel: false
     })
   }
+
 
   updateSelectedArch(name: string, lev: number) {
     this.setState({
@@ -170,6 +210,14 @@ export default class App extends React.Component<IProps, IState> {
     this.parseData(selectedPowers);
     this.closePanels();
   }
+  updateSelectedStats(selectedStats: any) {
+    this.setState({
+      selectedStats: selectedStats
+    })
+    window.localStorage.setItem("selectedStats", JSON.stringify(selectedStats));
+    this.parseData(this.state.selectedPowers, this.state.selectedArch, this.state.level, selectedStats);
+    this.closePanels();
+  }
 
   showManagePowersPanel = () => {
     this.setState({
@@ -183,7 +231,12 @@ export default class App extends React.Component<IProps, IState> {
     }
     );
   }
-
+  showManageStatsPanel = () => {
+    this.setState({
+      showManageStatsPanel: true
+    }
+    );
+  }
   getRank = (parsedArch: IArch, tier: number) => {
     switch (tier) {
       case 1:
@@ -216,12 +269,12 @@ export default class App extends React.Component<IProps, IState> {
     //return JSON.stringify(result); //JSON
   }
 
-  private parseData(sp: any = this.state.selectedPowers, selectedArch: string = this.state.selectedArch, level: number = this.state.level) {
+  private parseData(sp: any = this.state.selectedPowers, selectedArch: string = this.state.selectedArch, level: number = this.state.level, selectedStats: any = this.state.selectedStats) {
     if (selectedArch === "" ||
       level === 0 ||
       this.state.archData === [] ||
-      this.state.powerData === []
-    ) {
+      this.state.powerData === [] ||
+      this.state.statData === []) {
       return;
     }
 
@@ -235,6 +288,10 @@ export default class App extends React.Component<IProps, IState> {
       trainingPoints: 0,
       willDice: 0
     }
+
+    var abilities: Ability[] = [];
+    var buffs: Buff[] = [];
+    var naturals: Natural[] = [];
 
     this.state.archData.forEach(function (row) {
       if (row["Arch"] === selectedArch) {
@@ -266,19 +323,56 @@ export default class App extends React.Component<IProps, IState> {
       }
     });
 
-    //digest stats
+    //STATS
+    this.state.statData.forEach(stat => {
+      //Every row gets added unless the value is X
+      var statName = stat["Stat"];
+      var rank = this.state.selectedStats.statName;
 
+      if (stat[rank] != "X") {
+        switch (sp["Row"]) {
+          case "Ability":
+            abilities.push(new Ability({
+              action: stat["Action"],
+              name: stat["Attribute"],
+              value: stat[rank],
+              effect: stat["Effect"],
+              detail: stat["Detail"],
+              tags: ((stat["Tags"].length > 0) ? (stat["Tags"].split(" ")) : []),
+              condition: stat["Condition"],
+              buffs: [],
+              color: this.nameToColor(statName)
+            }));
+            break;
+          case "Natural":
+            naturals.push(new Natural({
+              name: stat["Attribute"],
+              value: stat[rank],
+              buffs: []
+            }));
+            break;
+          case "Buff":
+            buffs.push(new Buff({
+              source: stat,
+              effect: stat["Effect"],
+              value: stat[rank],
+              condition: stat["Condition"],
+              detail: stat["Detail"],
+              tags: (stat["Tags"].length > 0) ? (stat["Tags"].split(" ")) : [],
+              color: this.nameToColor(statName)
+            }));
+            break;
+        }
+      }
+    });
 
-
-    var abilities: Ability[] = [];
-    var passiveBuffs: Buff[] = [];
     this.state.powerData.forEach(power => {
       if (sp[power["Power"]] &&
         sp[power["Power"]] > 0 &&
         parsedArch) {
         var rank = this.getRank(parsedArch, sp[power["Power"]]);
         if (power["Row"] === "Ability") {
-          var ability = new Ability({
+          abilities.push(new Ability({
             action: power["Action"],
             name: power["Power"],
             value: power["r" + rank],
@@ -288,29 +382,9 @@ export default class App extends React.Component<IProps, IState> {
             condition: power["Condition"],
             buffs: [],
             color: this.nameToColor(power["Power"])
-          });
-
-
-          abilities.push(ability);
-        }
-      }
-    });
-
-    //loop through again, looking for buffs
-    //B: all buffs that apply to abilities will appear as a buffline below the ability
-    // loop through buffs. for each, loop through abilities looking for tags
-    // if a tag exists, add a buffline. Also update atk/effect fields
-    // left side still shows universal buffs
-
-    this.state.powerData.forEach(power => {
-      if (sp[power["Power"]] &&
-        sp[power["Power"]] > 0 &&
-        parsedArch) {
-        var rank = this.getRank(parsedArch, sp[power["power"]]);
-
-        if (power["Row"] === "Buff") {
-          var tags: string[] = power["Tags"].split(" ");
-          var buff = new Buff({
+          }));
+        } else if (power["Row"] === "Buff") {
+          buffs.push(new Buff({
             source: power["Power"],
             effect: power["Effect"],
             value: power["r" + rank],
@@ -318,27 +392,40 @@ export default class App extends React.Component<IProps, IState> {
             detail: power["Detail"],
             tags: (power["Tags"].length > 0) ? (power["Tags"].split(" ")) : [],
             color: this.nameToColor(power["Power"])
-          });
-          //if there is a passive tag
-          if (buff.includesTag("passive")) {
-            passiveBuffs.push(buff);
-          }
-          abilities.map((a, i) => {
-            a.tryOnBuff(buff);
-          });
-
+          }));
         }
       }
     });
 
+    buffs.map((b, j) => {
+      abilities.map((a, i) => {
+        this.tryOnBuff(a, b);
+      });
+      naturals.map((n, i) => {
+        this.tryOnBuff(n, b);
+      });
+    });
 
     this.setState({
       abilities: abilities,
-      buffs: passiveBuffs,
+      buffs: buffs,
+      naturals: naturals,
       arch: parsedArch
     })
+  }
 
-
+  private tryOnBuff(a: Natural | Ability, b: Buff) {
+    var match = false;
+    if (a.getName() === b.getName()){
+      a.addBuff(b);
+      return true;
+    }
+    a.getTags().forEach(tag => {
+      if (b.getTags().includes(tag)) {
+        a.addBuff(b);
+        return true;
+      }
+    });
   }
 
   private nameToColor(name: string) {

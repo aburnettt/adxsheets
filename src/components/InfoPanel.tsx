@@ -11,28 +11,19 @@ import TableRow from '@material-ui/core/Table';
 import Paper from '@material-ui/core/Paper';
 import Ability from "./Ability";
 import Buff from "./Buff";
-
-
-
-
+import Natural from "./Natural";
 
 interface IProps {
     abilities: Ability[]
     buffs: Buff[]
+    naturals: Natural[]
 }
 
-interface IState {
 
-}
-
-export default class InfoPanel extends React.Component<IProps, IState> {
+export default class InfoPanel extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);
-        this.state = {
-            abilityList: [],
-            buffList: []
-        };
     }
 
     render() {
@@ -41,6 +32,10 @@ export default class InfoPanel extends React.Component<IProps, IState> {
                 <Box minHeight="25%" width="30%" position="Left" display="flex">
                     <div style={{ width: '500px' }}>
                         <h3>Attributes</h3>
+                        {this.props.naturals.map((n: Natural, i) => {
+                            return n.render();
+                        })}
+                        <h3>Active Buffs</h3>
                         {this.props.buffs.map((b: Buff, i) => {
                             return b.render();
                         })}

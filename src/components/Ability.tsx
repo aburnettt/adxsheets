@@ -37,7 +37,7 @@ export default class Ability extends React.Component<IProps> {
         super(props);
     }
 
-  public  render() {
+    public render() {
 
 
         return (
@@ -51,7 +51,7 @@ export default class Ability extends React.Component<IProps> {
                         {this.getPriority()}
                     </TableCell>
                     <TableCell padding="none" >
-                        {this.props.value + " " + this.props.effect}
+                        {this.getValue() + " " + this.props.effect}
                         {this.props.detail && this.props.detail.length > 0 && (
                             <Tooltip title={this.props.detail.replaceAll("\"", "")} arrow interactive>
                                 <Button>(?)</Button>
@@ -65,9 +65,15 @@ export default class Ability extends React.Component<IProps> {
             </TableBody>);
     }
 
-    private getPriority() {
-        return "1d20";
+
+    public getName() {
+        return this.props.name;
     }
+
+    public getTags() {
+        return this.props.tags;
+    }
+
     /*switch (buff.effect) {
                   case "Priority":
                     a["atk"] = buff.value;
@@ -86,10 +92,61 @@ export default class Ability extends React.Component<IProps> {
               }
  */
 
-    public tryOnBuff(b: Buff) {
-        if (this.props.name === b.getSource() ||
-            b.includesTags(this.props.tags)) {
-            this.props.buffs.push(b);
+    private getPriority(): string {
+        var modifier = 0;
+        if (this.props.tags.includes("atk")) {
+            //this is an ATK roll
+            this.props.buffs.forEach(b => {
+                if (b.getTags().includes("atk") || b.getTags().includes("priority")) {
+                    if (/^\d$/.test(b.getValue())) {
+                        modifier += Number(b.getValue());
+                    } else {
+                        //it's an atk or priority buff but not a number? strange. 
+                        console.log("strange interaction between " + this.props.name + " and buff " + b.getName());
+                    }
+                }
+            });
+        } else {
+            //this is NOT an atk roll
+            this.props.buffs.forEach(b => {
+                if (b.getTags().includes("priority")) {
+                    if (/^\d$/.test(b.getValue())) {
+                        modifier += Number(b.getValue());
+                    }
+                }
+            });
         }
+        return this.returnModifiedValue(modifier) as string;
+    }
+
+    private getValue() {
+        var modifier = 0;
+        this.props.buffs.forEach(b => {
+            if (b.getEffect() === this.props.effect) {
+                if (/^\d$/.test(b.getValue())) {
+                    modifier += Number(b.getValue());
+                } else {
+                    //modifier is not a number but effect is same? odd
+                    console.log("strange modifier in " + this.props.name);
+                }
+            }
+        });
+        this.returnModifiedValue(modifier);
+    }
+
+    private returnModifiedValue(modifier: Number) {
+        if (modifier > 0) {
+            if (/^[\d]+$/.test(this.props.value)) {
+                return Number(this.props.value) + Number(modifier);
+            } else {
+                return this.props.value + " + " + modifier;
+            }
+        }
+        return this.props.value;
+    }
+
+    public addBuff(b: Buff) {
+
+        this.props.buffs.push(b);
     }
 }

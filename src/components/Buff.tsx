@@ -16,6 +16,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Ability from './Ability';
+import Natural from './Natural';
 
 
 interface IProps {
@@ -36,6 +38,11 @@ export default class Buff extends React.Component<IProps> {
 
 
     public render() {
+        //render in the BUFF PANEL. this means
+        //only those with passive tag
+        if (!this.props.tags.includes("passive")){
+            return ;
+        }
         var text = this.props.value + " " + this.props.effect;
         var condition = (this.props.condition.length > 0) ? " when " + this.props.condition : "";
         var byline = "From " + this.props.source;
@@ -59,22 +66,39 @@ export default class Buff extends React.Component<IProps> {
             </TableCell>
         </TableRow>);
     }
+    public appliesTo(a: Ability | Natural) {
+        var name: String = a.getName();
+        var tags: String[] = a.getTags();
 
-    public includesTags(tag : string[]) {
-        var includes = false;
-        tag.forEach(t => {
-            if (this.includesTag(t)){
-                return true;
-            }
+        if (this.props.source === name) {
+            return true;
+        }
+
+        var applies = false;
+        this.props.tags.forEach(myTag => {
+            tags.forEach(otherTag => {
+                if (myTag === otherTag ||
+                    myTag === name) {
+                    applies = true;
+                }
+            })
         });
-        return false;
+        return applies;
     }
 
-    public includesTag(tag : string) {
-        return this.props.tags.includes(tag);
+    public getValue(){
+        return this.props.value;
     }
 
-    public getSource(){
+    public getEffect(){
+        return this.props.effect;
+    }
+
+    public getTags() : string[]{
+        return this.props.tags;
+    }
+
+    public getName() : string{
         return this.props.source;
     }
 }

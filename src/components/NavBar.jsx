@@ -3,19 +3,23 @@ import { Button } from '@material-ui/core';
 
 // Stateless Functional Component
 
-const NavBar = ({ toggleManagePowers , toggleManageArch}) => {
+const NavBar = ({ toggleManagePowers , toggleManageArch, toggleManageStats}) => {
   return (
     <nav className="navbar navbar-light bg-light">
       <div className="navbar-brand" padding="normal">
         <Button
           color="primary"
           variant="contained"
-          onClick={toggleManagePowers}> Powers </Button> 
+          onClick={toggleManagePowers}>Powers</Button> 
           &nbsp;
+          <Button
+          color="primary"
+          variant="contained"
+          onClick={toggleManageArch}>Archetype/Level</Button>
         <Button
           color="primary"
           variant="contained"
-          onClick={toggleManageArch}> Archetype/Level </Button>
+          onClick={toggleManageStats}>Stats</Button>
       </div>
     </nav>
   );
