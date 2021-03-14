@@ -32,9 +32,11 @@ export default class InfoPanel extends React.Component<IProps> {
                 <Box minHeight="25%" width="30%" position="Left" display="flex">
                     <div style={{ width: '500px' }}>
                         <h3>Attributes</h3>
+                        {this.props.naturals.length === 0 && (<div>Select your Stats</div>)}
                         {this.props.naturals.map((n: Natural, i) => {
-                            return n.render();
-                        })}
+                                return n.render();
+                            })
+                        }
                         <h3>Active Buffs</h3>
                         {this.props.buffs.map((b: Buff, i) => {
                             return b.render();

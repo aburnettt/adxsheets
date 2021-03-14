@@ -46,6 +46,8 @@ export default class ManageArchPanel extends React.Component<IProps, IState> {
     this.setState({ level: Number(event.target.value) });
   }
 
+
+
   render() {
     //build output panel
     var output = [];

@@ -25,14 +25,14 @@ export default class ManageStatsPanel extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    if (this.props.selectedStats === {}) {
+    if (Object.keys(this.props.selectedStats).length === 0) {
       //  not coming in with any selected stats
       var selectedStats: any = {};
       this.props.statData.forEach(row => {
         var stat: string = row["Stat"]; //this row's stat
-        if (selectedStats[stat] === null) {
+        if (!selectedStats[stat]) {
           //we do not have an entry for this stat
-          selectedStats[stat] = "h";
+          selectedStats[stat] = "H";
         }
       })
       this.state = {
@@ -49,16 +49,17 @@ export default class ManageStatsPanel extends React.Component<IProps, IState> {
 
   }
   handleStatChange(stat: string, value: string) {
-    //TODO make this the safe array push
-    this.state.selectedStats[stat] = value;
+    var ss = JSON.parse(JSON.stringify(this.state.selectedStats));
+    ss[stat] = value;
+    this.setState({
+      selectedStats: ss
+    })
   }
 
 
   render() {
     //build output panel
-    var selectedStats = this.state.selectedStats;
-    var statChange = this.handleStatChange;
-
+    var humanRanks = [];
 
     return (
       <Dialog
@@ -74,11 +75,18 @@ export default class ManageStatsPanel extends React.Component<IProps, IState> {
         <DialogActions>
           <FormControl required variant="outlined">
             {Object.keys(this.state.selectedStats).map((stat, i) => {
-              alert(stat);
+              var rank = this.state.selectedStats[stat];
               return (<React.Fragment>
-                <select value={stat}
-                  onChange={(e) => statChange(stat, e.target.value)}>
-                  {stat}
+                {stat}
+                <select value={rank}
+                  onChange={(e) => this.handleStatChange(stat, e.target.value)}>
+                  {Object.keys(this.props.statData[0]).map((col, i) => {
+                    if (col.startsWith("H")) {
+                      return (<option value={col}>{col}</option>)
+                    } else {
+                      return;
+                    }
+                  })}
                 </select>
                 {/*output data about this stat */}
               </React.Fragment>);
@@ -93,7 +101,4 @@ export default class ManageStatsPanel extends React.Component<IProps, IState> {
       </Dialog>
     );
   }
-
-
-
 }

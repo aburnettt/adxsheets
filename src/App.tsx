@@ -7,6 +7,7 @@ import InfoPanel from "./components/InfoPanel";
 import Buff from "./components/Buff";
 import Ability from "./components/Ability";
 import Natural from "./components/Natural";
+import { setSourceMapRange } from "typescript";
 
 interface IArch {
   name: string
@@ -67,6 +68,7 @@ export default class App extends React.Component<IProps, IState> {
     let level = window.localStorage.getItem("level");
     let sp = window.localStorage.getItem("selectedPowers");
     let ss = window.localStorage.getItem("selectedStats");
+//    let ss = {};
 
     if (archName) {
       this.setState({
@@ -85,7 +87,7 @@ export default class App extends React.Component<IProps, IState> {
     }
     if (ss) {
       this.setState({
-        selectedStats: ss
+        selectedStats: JSON.parse(ss)
       })
     }
     fetch("https://raw.githubusercontent.com/aburnettt/adxsheets/master/src/data/powers.csv")
@@ -170,13 +172,10 @@ export default class App extends React.Component<IProps, IState> {
           (<ManageStatsPanel
             statData={this.state.statData}
             selectedStats={this.state.selectedStats}
-            handleConfirm={(statd: any) =>
-              this.setState({
-                statData: statd
-              })
+            handleConfirm={(ss: any) =>
+              this.updateSelectedStats(ss)
             }
-            handleClose={() => this.closePanels()
-            }
+            handleClose={() => this.closePanels()}
           />)
         }
       </div >
@@ -186,9 +185,11 @@ export default class App extends React.Component<IProps, IState> {
   closePanels = () => {
     this.setState({
       showManagePowersPanel: false,
-      showManageArchPanel: false
+      showManageArchPanel: false,
+      showManageStatsPanel: false
     })
   }
+
 
 
   updateSelectedArch(name: string, lev: number) {
@@ -211,6 +212,7 @@ export default class App extends React.Component<IProps, IState> {
     this.closePanels();
   }
   updateSelectedStats(selectedStats: any) {
+    alert("Updating "+JSON.stringify(selectedStats));
     this.setState({
       selectedStats: selectedStats
     })
@@ -327,10 +329,12 @@ export default class App extends React.Component<IProps, IState> {
     this.state.statData.forEach(stat => {
       //Every row gets added unless the value is X
       var statName = stat["Stat"];
-      var rank = this.state.selectedStats.statName;
+      var rank = selectedStats[statName];
+    
+      //alert(JSON.stringify(this.state.selectedStats));
 
       if (stat[rank] != "X") {
-        switch (sp["Row"]) {
+        switch (stat["Row"]) {
           case "Ability":
             abilities.push(new Ability({
               action: stat["Action"],

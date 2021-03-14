@@ -42,7 +42,7 @@ export default class Ability extends React.Component<IProps> {
 
         return (
             <TableBody style={{ backgroundColor: this.props.color }}>
-                <TableRow ><TableCell ><h5 >{this.props.name}</h5></TableCell></TableRow>
+                <TableRow ><TableCell><h5 >{this.props.name}</h5></TableCell></TableRow>
                 <TableRow>
                     <TableCell padding="none">
                         {this.props.action}
@@ -106,17 +106,21 @@ export default class Ability extends React.Component<IProps> {
                     }
                 }
             });
+            return "1d20" + (modifier > 0 ? " + "+modifier : "");
         } else {
             //this is NOT an atk roll
-            this.props.buffs.forEach(b => {
-                if (b.getTags().includes("priority")) {
-                    if (/^\d$/.test(b.getValue())) {
-                        modifier += Number(b.getValue());
-                    }
-                }
-            });
+
+            //currently unsupported. display nothing
+            // this.props.buffs.forEach(b => {
+            //     if (b.getTags().includes("priority")) {
+            //         if (/^\d$/.test(b.getValue())) {
+            //             modifier += Number(b.getValue());
+            //         }
+            //     }
+            // });
+            return "";
         }
-        return this.returnModifiedValue(modifier) as string;
+      //  return this.returnModifiedValue(modifier) as string;
     }
 
     private getValue() {
@@ -131,18 +135,20 @@ export default class Ability extends React.Component<IProps> {
                 }
             }
         });
-        this.returnModifiedValue(modifier);
+        return this.returnModifiedValue(this.props.value, modifier);
     }
 
-    private returnModifiedValue(modifier: Number) {
+    private returnModifiedValue(value: string, modifier: Number) {
         if (modifier > 0) {
-            if (/^[\d]+$/.test(this.props.value)) {
-                return Number(this.props.value) + Number(modifier);
+            if (/^[\d]+$/.test(value)) {
+                //numeric value with a modifier
+                return Number(value) + Number(modifier) + " ("+value + " + " + modifier+ ")";
             } else {
-                return this.props.value + " + " + modifier;
+                //non-numeric value with a modifier
+                return value + " + " + modifier;
             }
         }
-        return this.props.value;
+        return value;
     }
 
     public addBuff(b: Buff) {

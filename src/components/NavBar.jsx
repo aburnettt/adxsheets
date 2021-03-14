@@ -16,6 +16,7 @@ const NavBar = ({ toggleManagePowers , toggleManageArch, toggleManageStats}) => 
           color="primary"
           variant="contained"
           onClick={toggleManageArch}>Archetype/Level</Button>
+                    &nbsp;
         <Button
           color="primary"
           variant="contained"
